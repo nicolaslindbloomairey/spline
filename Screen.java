@@ -20,19 +20,32 @@ public class Screen extends JPanel implements MouseListener {
         cp = new ArrayList<Point>();
     }
 
-    public static Curve catmullrom(Point p0, Point p1, Point p2, Point p3, double dt) {
+
+    public static Curve bezier(int[] x, int[] y) {
+        ArrayList<Integer> xresult = new ArrayList<Integer>();
+        ArrayList<Integer> yresult = new ArrayList<Integer>();
+        int n = x.length -1;
+
+        for (int i = 0; i<=n; i++) {
+            xresult.add( (
+        }
+
+    }
+
+
+    public static Curve cubicbezier(Point p0, Point p1, Point p2, Point p3, double dt) {
         int n = (int) (1.0/dt);
         int[] x = new int[n];
         int[] y = new int[n];
         for (double t = 0.0; t<1.0; t+=dt) {
             int i = (int)(t/dt);
-            x[i] = (int) (0.5 * ( (2*p1.x) + ((0 - p0.x + p2.x)*t) + (((2*p0.x) - (5*p1.x) + (4*p2.x) - p3.x)*(Math.pow(t, 2))) + (((-1*p0.x) + (3*p1.x) - (3*p2.x) + p3.x)*(Math.pow(t, 3)))));
-            y[i] = (int) (0.5 * ( (2*p1.y) + ((0 - p0.y + p2.y)*t) + (((2*p0.y) - (5*p1.y) + (4*p2.y) - p3.y)*(Math.pow(t, 2))) + (((-1*p0.y) + (3*p1.y) - (3*p2.y) + p3.y)*(Math.pow(t, 3)))));
+            x[i] = (int) ( (Math.pow((1.0 - t), 3) * p0.x) + (3 * Math.pow((1.0-t), 2) * t * p1.x) + (3 * Math.pow(t, 2) * (1.0-t) * p2.x) + (Math.pow(t, 3) * p3.x));
+            y[i] = (int) ( (Math.pow((1.0 - t), 3) * p0.y) + (3 * Math.pow((1.0-t), 2) * t * p1.y) + (3 * Math.pow(t, 2) * (1.0-t) * p2.y) + (Math.pow(t, 3) * p3.y));
         }
         double t = 1.0;
         int i = n-1;
-            x[i] = (int) (0.5 * ( (2*p1.x) + ((0 - p0.x + p2.x)*t) + (((2*p0.x) - (5*p1.x) + (4*p2.x) - p3.x)*(Math.pow(t, 2))) + (((-1*p0.x) + (3*p1.x) - (3*p2.x) + p3.x)*(Math.pow(t, 3)))));
-            y[i] = (int) (0.5 * ( (2*p1.y) + ((0 - p0.y + p2.y)*t) + (((2*p0.y) - (5*p1.y) + (4*p2.y) - p3.y)*(Math.pow(t, 2))) + (((-1*p0.y) + (3*p1.y) - (3*p2.y) + p3.y)*(Math.pow(t, 3)))));
+        x[i] = (int) ( (Math.pow((1.0 - t), 3) * p0.x) + (3 * Math.pow((1.0-t), 2) * t * p1.x) + (3 * Math.pow(t, 2) * (1.0-t) * p2.x) + (Math.pow(t, 3) * p3.x));
+        y[i] = (int) ( (Math.pow((1.0 - t), 3) * p0.y) + (3 * Math.pow((1.0-t), 2) * t * p1.y) + (3 * Math.pow(t, 2) * (1.0-t) * p2.y) + (Math.pow(t, 3) * p3.y));
         Curve temp = new Curve(x, y, n);
         return temp;
     }
@@ -67,6 +80,7 @@ public class Screen extends JPanel implements MouseListener {
     public void mousePressed(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseClicked(MouseEvent e) {
+        if (e.get
         cp.add(new Point(e.getX(), e.getY()));
         System.out.println(e.getX() + " " + e.getY());
         repaint();
